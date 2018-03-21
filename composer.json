@@ -1,0 +1,15 @@
+{
+    "name": "erick/ci-gis",
+    "description": "Geo Information System with CodeIgniter",
+    "authors": [
+        {
+            "name": "Erick Surya",
+            "email": "ericksuryadinata@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^2.4",
+        "nesbot/carbon": "^1.24",
+        "dompdf/dompdf": "^0.8.2"
+    }
+}
