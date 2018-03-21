@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </button>
         </nav>
         <div class="space-div"></div>
-        <h3 class="text-center">Peta Kediri 2018</h3>
+        <h3 class="text-center">Peta 2018</h3>
         <div class="map-view" id="map"></div>
         <div>
             <label for="lat">Lat</label>

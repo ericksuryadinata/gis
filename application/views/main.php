@@ -41,8 +41,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         Pertemuan Kedua
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Wait a minutes</h5>
-                        <p class="card-text">The definition not ready yet</p>
+                        <h5 class="card-title">Belajar Marker dan Event Listener</h5>
+                        <p class="card-text">Membuat event listener dan info window</p>
                         <a href="<?php echo base_url('main/pertemuan_kedua')?>" class="btn btn-primary">GO !!</a>
                     </div>
                 </div>
