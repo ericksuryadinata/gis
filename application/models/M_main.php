@@ -14,6 +14,28 @@ class M_main extends CI_Model {
 		return $res;
 	}
 
+	public function insertDataWithoutEscape($tablename,$data){
+		foreach ($data as $key => $value) {
+            if ($key == 'lokasi') {
+                $this->db->set('lokasi', $value, false);
+                unset($data['lokasi']);
+            }
+        }
+		$res = $this->db->insert($tablename,$data);
+		return $res;
+	}
+
+	public function updateDataWithoutEscape($tablename,$data,$where){
+		foreach ($data as $key => $value) {
+            if ($key == 'lokasi') {
+                $this->db->set('lokasi', $value, false);
+                unset($data['lokasi']);
+            }
+        }
+		$res = $this->db->update($tablename,$data,$where);
+		return $res;
+	}
+
 	public function updateData($tablename,$data,$where){
 		$res = $this->db->update($tablename,$data,$where);
 		return $res;
@@ -22,6 +44,9 @@ class M_main extends CI_Model {
 	public function deleteData($tablename,$where){
 		$res = $this->db->delete($tablename,$where);
 		return $res;
-    }
+	}
+	
+
+
 
 }

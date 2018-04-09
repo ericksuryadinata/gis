@@ -10,10 +10,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <title>Sistem Informasi Geografis</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/front.css')?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/vendor/mdl/material.min.css')?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/vendor/mdl/material.min.css')?>">
+	<script src="<?php echo base_url('assets/vendor/jquery/jquery.js');?>"></script>
+	<script src="<?php echo base_url('assets/vendor/mdl/material.min.js')?>"></script>
+	<script>
+		let base_url = '<?php echo base_url();?>';
+	</script>
 </head>
 <body>
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <div class="gis-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
                 <span class="mdl-layout-title">SISTEM INFORMASI GEOGRAFIS</span>
@@ -22,38 +27,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="mdl-layout__drawer">
             <nav class="mdl-navigation">
                 <a class="mdl-navigation__link" href="<?php  echo base_url(); ?>">SISTEM INFORMASI GEOGRAFIS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_satu'); ?>">PERTEMUAN SATU</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_dua'); ?>">PERTEMUAN DUA</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_tiga'); ?>">PERTEMUAN TIGA</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_empat'); ?>">PERTEMUAN EMPAT</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_lima'); ?>">PERTEMUAN LIMA</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_enam'); ?>">PERTEMUAN ENAM</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_tujuh'); ?>">PERTEMUAN TUJUH</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_delapan'); ?>">PERTEMUAN DELAPAN</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_sembilan'); ?>">PERTEMUAN SEMBILAN</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_sepuluh'); ?>">PERTEMUAN SEPULUH</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_sebelas'); ?>">PERTEMUAN SEBELAS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_duabelas'); ?>">PERTEMUAN DUABELAS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_tigabelas'); ?>">PERTEMUAN TIGABELAS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_empatbelas'); ?>">PERTEMUAN EMPATBELAS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_limabelas'); ?>">PERTEMUAN LIMABELAS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('lihat/materi/pertemuan_enambelas'); ?>">PERTEMUAN ENAMBELAS</a>
+            <?php 
+				foreach($materi as $key=>$value){
+			?>
+				<a class="mdl-navigation__link" href="<?php echo base_url('lihat/materi/'.$value->Link); ?>"><?php echo $value->Bab?></a>
+			<?php
+				}
+			?>
             </nav>
         </div>
 
         <main class="mdl-layout__content">
             <div class="page-content">
                 <div class="mdl-grid">
-                    
+					<div class="gis-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--12-col">
+						<h3>Tentang Materi</h3>
+						<p>Disini akan dijelaskan tentang penggunaan Google Maps dengan Codeigniter</p>
+						<p>Pembahasan disini akan dijelaskan secara hardcode sesuai dengan code yang ditulis di <code class="mdl-color-text--red-800">folder</code> yang telah didownload</p>
+						<h3>Materi yang di cover</h3>
+						<ul>
+						<?php
+							foreach($materi as $key=>$value){
+						?>
+							<li><?php echo $value->Materi?></li>
+						<?php
+							}
+						?>
+						</ul>
+						<a href="<?php echo base_url('lihat/materi/pertemuan_dua')?>" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+						Materi Selanjutnya
+						</a>
+          			</div>
                 </div>
             </div>
         </main>
     </div>
 </body>
-<script src="<?php echo base_url('assets/vendor/jquery/jquery.js');?>"></script>
-<script src="<?php echo base_url('assets/vendor/mdl/material.min.js')?>"></script>
-<script>
-    let base_url = '<?php echo base_url();?>';
-</script>
-
 </html>

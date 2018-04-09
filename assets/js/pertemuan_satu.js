@@ -1,5 +1,3 @@
-
-
 $("#refresh1").on('click', function () {
     var latitude1 = $("input[name=lat1]").val();
     var longitude1 = $("input[name=long1]").val();

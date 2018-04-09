@@ -17,3 +17,27 @@ polyline
 polygon
 
 pertemuan lima
+
+probolinggo
+-7.776423
+113.203713
+
+surabaya
+-7.257472
+112.752088
+
+malang
+-7.966620
+112.632632
+
+kediri
+-7.848016
+112.017829
+
+tulungagung
+-8.091221
+111.964173
+
+mojokerto
+-7.470475
+112.440133

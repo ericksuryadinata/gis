@@ -10,17 +10,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <title>Sistem Informasi Geografis</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/front.css')?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/vendor/mdl/material.min.css')?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url('node_modules/sweetalert2/dist/sweetalert2.min.css')?>">
-    <link href="<?php echo base_url('assets/css/front.css');?>" rel="stylesheet">
-    <script src="<?php echo base_url('assets/vendor/mdl/material.min.js')?>"></script>
-    <script src="<?php echo base_url('assets/vendor/jquery/jquery.js');?>"></script>
-    <script src="<?php echo base_url('node_modules/sweetalert2/dist/sweetalert2.min.js')?>"></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/vendor/mdl/material.min.css')?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('node_modules/sweetalert2/dist/sweetalert2.min.css')?>">
+	<link href="<?php echo base_url('assets/css/front.css');?>" rel="stylesheet">
+	<script src="<?php echo base_url('assets/vendor/mdl/material.min.js')?>"></script>
+	<script src="<?php echo base_url('assets/vendor/jquery/jquery.min.js');?>"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo getenv('GMAPS_API_KEY')?>"></script>
-    <script>let base_url = '<?php echo base_url();?>';</script>
-    <script src="<?php echo base_url('assets/js/pertemuan_empat.js')?>"></script>
 </head>
-<body onload="initMap()">
+<body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
@@ -43,29 +40,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <main class="mdl-layout__content">
             <div class="page-content">
                 <div class="mdl-grid">
-                    <div class="mdl-cell mdl-cell--12-col">
+					<div class="mdl-cell mdl-cell--12-col">
                         <div class="map-view" id="map"></div>
-                        <div class="mdl-grid">
+						<div class="mdl-grid">
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="p4-lat" name="p4-lat">
+									<input class="mdl-textfield__input" type="text" id="p3-lat" name="p3-lat">
 									<label class="mdl-textfield__label" for="Latitude">Latitude</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="p4-long" name="p4-long">
+									<input class="mdl-textfield__input" type="text" id="p3-long" name="p3-long">
 									<label class="mdl-textfield__label" for="Longitude">Longitude</label>
 								</div>                  
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="p4-zoom" name="p4-zoom">
+									<input class="mdl-textfield__input" type="text" id="p3-zoom" name="p3-zoom">
 									<label class="mdl-textfield__label" for="Longitude">Zoom</label>
 								</div>                  
 							</div>
 							<div class="mdl-cell mdl-cell--2-col mdl-textfield">
-								<a class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="p4-refresh">Refresh</a>
+								<a class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="p3-refresh">Refresh</a>
 							</div>
                         </div>
                     </div>
@@ -73,6 +70,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </main>
     </div>
-
 </body>
+<script src="<?php echo base_url('node_modules/sweetalert2/dist/sweetalert2.min.js')?>"></script>
+<script>
+	let base_url = '<?php echo base_url();?>';
+</script>
+<script src="<?php echo base_url('assets/js/pertemuan_tiga.js')?>"></script>
 </html>

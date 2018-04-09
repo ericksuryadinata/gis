@@ -21,196 +21,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </header>
         <div class="mdl-layout__drawer">
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="<?php  echo base_url(); ?>">SISTEM INFORMASI GEOGRAFIS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_satu'); ?>">PERTEMUAN SATU</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_dua'); ?>">PERTEMUAN DUA</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_tiga'); ?>">PERTEMUAN TIGA</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_empat'); ?>">PERTEMUAN EMPAT</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_lima'); ?>">PERTEMUAN LIMA</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_enam'); ?>">PERTEMUAN ENAM</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_tujuh'); ?>">PERTEMUAN TUJUH</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_delapan'); ?>">PERTEMUAN DELAPAN</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_sembilan'); ?>">PERTEMUAN SEMBILAN</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_sepuluh'); ?>">PERTEMUAN SEPULUH</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_sebelas'); ?>">PERTEMUAN SEBELAS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_duabelas'); ?>">PERTEMUAN DUABELAS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_tigabelas'); ?>">PERTEMUAN TIGABELAS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_empatbelas'); ?>">PERTEMUAN EMPATBELAS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_limabelas'); ?>">PERTEMUAN LIMABELAS</a>
-                <a class="mdl-navigation__link" href="<?php  echo base_url('main/pertemuan_enambelas'); ?>">PERTEMUAN ENAMBELAS</a>
+				<a class="mdl-navigation__link" href="<?php  echo base_url(); ?>">SISTEM INFORMASI GEOGRAFIS</a>
+			<?php 
+				foreach($materi as $key=>$value){
+			?>
+				<a class="mdl-navigation__link" href="<?php echo base_url('lihat/materi/'.$value->Link); ?>"><?php echo $value->Bab?></a>
+			<?php
+				}
+			?>
             </nav>
         </div>
 
         <main class="mdl-layout__content">
             <div class="page-content">
                 <div class="mdl-grid">
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
+				<?php 
+					foreach($materi as $key=>$value){
+				?>
+					<div class="mdl-cell mdl-cell--4-col">
+                        <div class="card-main__container card-main__img--<?php echo $value->Link;?> mdl-card mdl-shadow--4dp">
                             <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
+                                <h2 class="mdl-card__title-text"><?php echo $value->Bab;?></h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
+								<?php echo $value->Materi;?>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
+                                <a href="<?php echo base_url('lihat/materi/'.$value->Link);?>" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Menuju Materi</a>
                             </div>
                         </div>
                     </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--4-col">
-                        <div class="card-main__container card-main__img mdl-card mdl-shadow--4dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Pertemuan Pertama</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                Pengenalan google maps JavaScript API
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <a href="" class="mdl-button mdl-button--colored mdl-js-button mdl-js mdl-js-ripple-effect">Menuju Materi</a>
-                            </div>
-                        </div>
-                    </div>
+				<?php
+					}
+				?>
                 </div>
             </div>
-            <footer class="mdl-mini-footer">
-                <div class="mdl-mini-footer__left-section">
-                    <div class="mdl-logo">Title</div>
-                    <ul class="mdl-mini-footer__link-list">
-                    <li><a href="#">Help</a></li>
-                    <li><a href="#">Privacy & Terms</a></li>
-                    </ul>
-                </div>
-            </footer>
         </main>
     </div>
 </body>

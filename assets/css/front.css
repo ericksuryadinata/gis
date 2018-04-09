@@ -1,3 +1,47 @@
+.gis-ribbon {
+  width: 100%;
+  height: 40vh;
+  background-color: #3F51B5;
+  flex-shrink: 0;
+}
+
+.gis-main {
+  margin-top: -35vh;
+  flex-shrink: 0;
+}
+
+.gis-header .mdl-layout__header-row {
+  padding-left: 40px;
+}
+
+.gis-container {
+  max-width: 1600px;
+  width: calc(100% - 16px);
+  margin: 0 auto;
+}
+
+.gis-content {
+  border-radius: 2px;
+  padding: 20px 56px;
+  margin-bottom: 80px;
+}
+
+.gis-layout.is-small-screen .gis-content {
+  padding: 40px 28px;
+}
+
+.gis-content h3 {
+  margin-top: 20px;
+}
+
+.gis-footer {
+  padding-left: 40px;
+}
+
+.gis-footer .mdl-mini-footer--link-list a {
+  font-size: 13px;
+}
+
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
@@ -15,7 +59,127 @@
     width: initial;
 }
 
-.card-main__img > .mdl-card__title{
+.card-main__img--pertemuan_satu > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_dua > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_tiga > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_empat > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_lima > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_enam > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_tujuh > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_delapan > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_sembilan > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_sepuluh > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_sebelas > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_duabelas > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_tigabelas > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_empatbelas > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_limabelas > .mdl-card__title{
+    color: #000000;
+    height: 176px;
+    width: 100%;
+    background: url(../img/card/apimaps.png) center no-repeat;
+
+}
+
+.card-main__img--pertemuan_enambelas > .mdl-card__title{
     color: #000000;
     height: 176px;
     width: 100%;
@@ -30,4 +194,55 @@
 
 .space-div{
     margin:100px;
+}
+
+.table-responsive {
+    min-height: .01%;
+    overflow-x: auto;
+}
+
+@media screen and (max-width: 767px) {
+    .table-responsive {
+        width: 100%;
+        margin-bottom: 15px;
+        overflow-y: hidden;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        border: 1px solid #ddd;
+    }
+    .table-responsive > .table {
+        margin-bottom: 0;
+    }
+    .table-responsive > .table > thead > tr > th,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tfoot > tr > td {
+        white-space: nowrap;
+    }
+    .table-responsive > .table-bordered {
+        border: 0;
+    }
+    .table-responsive > .table-bordered > thead > tr > th:first-child,
+    .table-responsive > .table-bordered > tbody > tr > th:first-child,
+    .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+    .table-responsive > .table-bordered > thead > tr > td:first-child,
+    .table-responsive > .table-bordered > tbody > tr > td:first-child,
+    .table-responsive > .table-bordered > tfoot > tr > td:first-child {
+        border-left: 0;
+    }
+    .table-responsive > .table-bordered > thead > tr > th:last-child,
+    .table-responsive > .table-bordered > tbody > tr > th:last-child,
+    .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+    .table-responsive > .table-bordered > thead > tr > td:last-child,
+    .table-responsive > .table-bordered > tbody > tr > td:last-child,
+    .table-responsive > .table-bordered > tfoot > tr > td:last-child {
+        border-right: 0;
+    }
+    .table-responsive > .table-bordered > tbody > tr:last-child > th,
+    .table-responsive > .table-bordered > tfoot > tr:last-child > th,
+    .table-responsive > .table-bordered > tbody > tr:last-child > td,
+    .table-responsive > .table-bordered > tfoot > tr:last-child > td {
+        border-bottom: 0;
+    }
 }

@@ -1,32 +1,36 @@
-
-$("#refresh1").on('click', function () {
-    var p2_lat = parseFloat($("input[name=p2-lat]").val());
-    var p2_long = parseFloat($("input[name=p2-long]").val());
-    let p2_zoom = parseInt($("input[name=p2-zoom]").val());
-    let image = base_url+'assets/img/facebook.ico';
-    console.log(p2_lat, p2_long);
-    var p2_new_lat_long = new google.maps.LatLng(p2_lat, p2_long);
-    console.log(p2_new_lat_long);
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: p2_zoom,
-        center: p2_new_lat_long
-    });
-    
-    var marker = new google.maps.Marker({
-        position: p2_new_lat_long,
-        map: map,
-        title:'now here'
-    });
-    
-    marker.addListener('click', function(e) {
-        map.setZoom(19);
-        map.setCenter(marker.getPosition());
-        var infowindow = new google.maps.InfoWindow({
-            content: 'Halo Informatika'
-        });
-        toggleBounce(marker);
-        infowindow.open(map,marker);
-    });
+$(document).ready(function () {
+	$("#p2-refresh").on('click', function () {
+		let p2_lat = parseFloat($("input[name=p2-lat]").val());
+		let p2_long = parseFloat($("input[name=p2-long]").val());
+		let p2_zoom = parseInt($("input[name=p2-zoom]").val());
+		console.log(p2_lat, p2_long, p2_zoom);
+		if(isNaN(p2_lat) || isNaN(p2_long) || isNaN(p2_zoom)){
+			swal('Error','Isian tidak boleh kosong','error');
+		}else{
+			let image = base_url+'assets/img/facebook.ico';
+			var p2_new_lat_long = new google.maps.LatLng(p2_lat, p2_long);
+			var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: p2_zoom,
+				center: p2_new_lat_long
+			});
+			
+			var marker = new google.maps.Marker({
+				position: p2_new_lat_long,
+				map: map,
+				title:'now here'
+			});
+			
+			marker.addListener('click', function(e) {
+				map.setZoom(19);
+				map.setCenter(marker.getPosition());
+				var infowindow = new google.maps.InfoWindow({
+					content: 'Halo Informatika'
+				});
+				toggleBounce(marker);
+				infowindow.open(map,marker);
+			});
+		}
+	});
 });
 
 function initMap(){
@@ -66,7 +70,6 @@ function initMap(){
         }
     });
 }
-
 
 function toggleBounce(marker) {
     if (marker.getAnimation() !== null) {
