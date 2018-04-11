@@ -42,8 +42,9 @@ class Lihat extends CI_Controller {
                 $data['lokasi'] = $this->main->selectData('id, kode_lokasi, nama_lokasi, astext(lokasi) as plain_lokasi','tb_titik','')->result_array();
                 $this->load->view('pertemuan_lima',$data);
                 break;
-            case 'pertemuan_enam':
-                $this->load->view('pertemuan_enam');
+			case 'pertemuan_enam':
+				$data['materi'] = $this->ListMateri();
+                $this->load->view('pertemuan_enam',$data);
                 break;
             case 'pertemuan_tujuh':
                 $this->load->view('pertemuan_tujuh');
@@ -158,6 +159,11 @@ class Lihat extends CI_Controller {
 				'Bab'=>'Pertemuan Lima',
 				'Materi'=>'Menghubungkan Database dengan Google Maps',
 				'Link'=>'pertemuan_lima'
+			),
+			(object) array(
+				'Bab'=>'Pertemuan Enam',
+				'Materi'=>'Waiting ....',
+				'Link'=>'pertemuan_enam'
 			),
 		);
 

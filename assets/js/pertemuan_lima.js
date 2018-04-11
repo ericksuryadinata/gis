@@ -8,7 +8,6 @@ function initMap(){
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
     let koordinatFromDatabase = [];
-    //console.log(lokasiFromDatabase);
     $.each(lokasiFromDatabase, function (i, v) { 
         koordinatFromDatabase.push([]);
         lokasi = v.plain_lokasi.replace(' ',', ');
@@ -17,7 +16,6 @@ function initMap(){
         lokasi = lokasi.split(',');
         koordinatFromDatabase[i].push(lokasi[0],lokasi[1]);
     });
-    //console.log(parseFloat(koordinatFromDatabase[0][0]),parseFloat(koordinatFromDatabase[0][1]));
     $.each(koordinatFromDatabase, function (i, v) { 
         var lokasiMaps = new google.maps.LatLng(parseFloat(v[0]),parseFloat(v[1]));
         let marker = new google.maps.Marker({
