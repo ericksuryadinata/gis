@@ -41,3 +41,9 @@ tulungagung
 mojokerto
 -7.470475
 112.440133
+
+pertemuan enam
+multipoint marker polygon save database
+
+pertemuan 7 (UTS)
+load area

@@ -47,6 +47,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <main class="mdl-layout__content">
             <div class="page-content">
                 <div class="mdl-grid">
+					<div class="gis-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--12-col p-reset">
+						<h3>Tentang Materi</h3>
+						<p>Pada bab ini akan dijelaskan tentang penggunaan Database dan Google Maps</p>
+						<p>File dari pertemuan ini bisa ditemukan pada : </p>
+						<p>Views : <code class="mdl-color-text--red-800">application/views/pertemuan_lima.php</code></p>
+						<p>Controllers : <code class="mdl-color-text--red-800">application/controllers/Lihat.php</code> pada <code class="mdl-color-text--red-800">Case <i>pertemuan_lima</i></code></p>
+						<p>Models : <code class="mdl-color-text--red-800">application/models/M_main.php</code></p>
+						<p>Metode yang digunakan campuran antara manual dan request AJAX</p>
+						<p>Manual request yang pertama adalah dengan menampilkan data dari server yang kita parsingkan ke dalam javascript dengan memanfaatkan <code class="mdl-color-text--red-800">json_encode</code> dari data yang telah kita peroleh</p>
+						<p>Untuk penambahan data dilakukan dengan metode POST</p>
+						<p>Untuk <code class="mdl-color-text--red-800">edit, update, delete</code> kita gunakan <code class="mdl-color-text--red-800">AJAX</code> request</p>
+						<h3>Pembahasan Controllers</h3>
+						<p>Semua data yang dikirimkan ke <code class="mdl-color-text--red-800">views</code> berasal dari code dibawah ini</p>
+						<code class="mdl-color-text--red-800">$data['lokasi'] = $this->main->selectData('id, kode_lokasi, nama_lokasi, astext(lokasi) as plain_lokasi','tb_titik','')->result_array();</code>
+						<a href="<?php echo base_url('lihat/materi/pertemuan_dua')?>" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+						Materi Selanjutnya
+						</a>
+          			</div>
                     <div class="mdl-cell mdl-cell--12-col">
                         <div class="map-view" id="map"></div>
                     </div>
@@ -92,10 +110,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                             <thead>
                                 <tr>
-                                    <th>kode lokasi</th>
-                                    <th>nama lokasi</th>
-                                    <th>lokasi</th>
-                                    <th>aksi</th>
+                                    <th>Kode Lokasi</th>
+                                    <th>Nama Lokasi</th>
+                                    <th>Lokasi</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>

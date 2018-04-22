@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Page Title</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<input type="text" id="jarijari"><br>
+	<input type="submit" value="hitung" onclick="jumlahkan()">
+	<p id="jumlah"></p>
+	<script>
+		function jumlahkan(){
+			let phi = 3.14;
+			console.log(parseFloat(phi));
+			let r = document.getElementById('jarijari').value;
+			console.log(parseFloat(r));
+			let luas = parseFloat(phi) * Math.pow(parseFloat(r),2);
+			console.log(luas);
+			document.getElementById('jumlah').innerHTML = 'jumlah luas lingkaran : '+luas+'cm<sup>2</sup>';
+		}
+	</script>
+</body>
+</html>

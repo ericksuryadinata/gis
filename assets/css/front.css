@@ -42,6 +42,11 @@
   font-size: 13px;
 }
 
+.gis-dialog{
+	height: 850px;
+	width: 1080px;
+}
+
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
@@ -199,6 +204,10 @@
 .table-responsive {
     min-height: .01%;
     overflow-x: auto;
+}
+
+.p-reset > p{
+	margin-bottom: 5px;
 }
 
 @media screen and (max-width: 767px) {

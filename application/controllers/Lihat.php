@@ -44,6 +44,7 @@ class Lihat extends CI_Controller {
                 break;
 			case 'pertemuan_enam':
 				$data['materi'] = $this->ListMateri();
+				$data['lokasi'] = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, astext(wilayah) as plain_wilayah, astext(pusat_kota) as pusat_kota, astext(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result_array();
                 $this->load->view('pertemuan_enam',$data);
                 break;
             case 'pertemuan_tujuh':
@@ -130,7 +131,77 @@ class Lihat extends CI_Controller {
     public function editMapP5(){
         $id = $this->input->post('id');
         $data = $this->main->selectData('id, kode_lokasi, nama_lokasi, astext(lokasi) as plain_lokasi','tb_titik','where id='.$id)->result();
-        echo json_encode($data);
+		echo json_encode($data);
+	}
+
+	public function saveMapP6(){
+		$kode_kabupaten = $this->input->post('p6-kode-kabupaten');
+		$nama_kabupaten = $this->input->post('p6-nama-kabupaten');
+		$nama_bupati = $this->input->post('p6-nama-bupati');
+		$jumlah_penduduk = $this->input->post('p6-jumlah-penduduk');
+		$jumlah_ukm = $this->input->post('p6-jumlah-ukm');
+		$pusat_kota = $this->input->post('p6-pusat-kota');
+		$pusat_ukm = $this->input->post('p6-pusat-ukm');
+		$wilayah = $this->input->post('p6-wilayah');
+		if($kode_kabupaten === '' || $nama_kabupaten === '' 
+		|| $nama_bupati === '' || $jumlah_penduduk === '' || $jumlah_ukm === ''
+		|| $pusat_kota === '' || $pusat_ukm === '' || $wilayah === ''){
+			echo json_encode(array('status'=>false));
+		}else{
+			$data = array(
+				'kode_kabupaten' => $kode_kabupaten,
+				'nama_kabupaten' => $nama_kabupaten,
+				'wilayah' => 'mpointfromtext("MULTIPOINT('.$wilayah.')")',
+				'pusat_kota' => 'geomfromtext("POINT('.$pusat_kota.')")',
+				'pusat_ukm'	 => 'geomfromtext("POINT('.$pusat_ukm.')")',
+				'nama_bupati' => $nama_bupati,
+				'jumlah_penduduk' => $jumlah_penduduk,
+				'jumlah_ukm' => $jumlah_ukm
+			);
+			$tambah = $this->main->insertDataWithoutEscape('tb_kumpulan_point_uts',$data);
+            echo json_encode(array('status'=>true));
+		}
+        
+    }
+
+    public function updateMapP6(){
+        $id = $this->input->post('p6-id-edit');
+        $kode_kabupaten = $this->input->post('p6-kode-kabupaten');
+		$nama_kabupaten = $this->input->post('p6-nama-kabupaten');
+		$nama_bupati = $this->input->post('p6-nama-bupati');
+		$jumlah_penduduk = $this->input->post('p6-jumlah-penduduk');
+		$jumlah_ukm = $this->input->post('p6-jumlah-ukm');
+		$pusat_kota = $this->input->post('p6-pusat-kota');
+		$pusat_ukm = $this->input->post('p6-pusat-ukm');
+		$wilayah = $this->input->post('p6-wilayah');
+        
+    }
+
+    public function deleteMapP6(){
+        $id = $this->input->post('id');
+        $where = array('id'=>$id);
+        $delete = $this->main->deleteData('tb_kumpulan_point_uts',$where);
+        echo json_encode(array('status'=>true));
+    }
+
+    public function editMapP6(){
+		$id = $this->input->post('id');
+        $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, astext(wilayah) as plain_wilayah, astext(pusat_kota) as pusat_kota, astext(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','where id='.$id)->result();
+		echo json_encode($data);
+	}
+
+	protected function createArrayMultipoint($arrayMultipoint){
+		$value = '';
+		for($i = 0; $i < count($arrayMultipoint); $i++){
+			$_multipoint =explode(',',$arrayMultipoint[$i]);
+			if($i == (count($arrayMultipoint) - 1)){
+				$value .= $_multipoint[0].' '.$_multipoint[1];
+			}else{
+				$value .= $_multipoint[0].' '.$_multipoint[1].',';
+			}
+			
+		}
+		return $value;
 	}
 	
 	protected function ListMateri(){
@@ -157,12 +228,12 @@ class Lihat extends CI_Controller {
 			),
 			(object) array(
 				'Bab'=>'Pertemuan Lima',
-				'Materi'=>'Menghubungkan Database dengan Google Maps',
+				'Materi'=>'Menghubungkan Database dengan Google Maps, ditampilkan dengan polyline atau polygon',
 				'Link'=>'pertemuan_lima'
 			),
 			(object) array(
 				'Bab'=>'Pertemuan Enam',
-				'Materi'=>'Waiting ....',
+				'Materi'=>'Multipoint dengan polygon',
 				'Link'=>'pertemuan_enam'
 			),
 		);

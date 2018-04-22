@@ -1,4 +1,5 @@
 function initMap(){
+	let jalur;
     let lokasi = {lat: -7.271392714896101, lng: 112.73542550138382};
     let map = new google.maps.Map(document.getElementById('map'), {
         zoom: 8,
@@ -6,7 +7,19 @@ function initMap(){
         draggableCursor: 'default',
         draggingCursor: 'pointer',
         mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
+	});
+	let polyline = new google.maps.Polyline({
+		strokeColor : '#FF0000',
+		strokeOpacity: 0.8,
+		strokeWeight: 1,
+	});
+	let polygon = new google.maps.Polygon({
+		strokeColor : '#FF0000',
+		strokeOpacity: 0.8,
+		strokeWeight: 1,
+		fillColor:'#FF0000'
+	});
+	polygon.setMap(map);
     let koordinatFromDatabase = [];
     $.each(lokasiFromDatabase, function (i, v) { 
         koordinatFromDatabase.push([]);
@@ -15,14 +28,18 @@ function initMap(){
         lokasi = lokasi.replace(')','');
         lokasi = lokasi.split(',');
         koordinatFromDatabase[i].push(lokasi[0],lokasi[1]);
-    });
+	});
+	console.log(koordinatFromDatabase);
     $.each(koordinatFromDatabase, function (i, v) { 
         var lokasiMaps = new google.maps.LatLng(parseFloat(v[0]),parseFloat(v[1]));
         let marker = new google.maps.Marker({
             position  : lokasiMaps,
             map       : map
-        });  
-    });
+		});
+		jalur = polygon.getPath();
+		jalur.push(lokasiMaps);
+	});
+	jalur.push(new google.maps.LatLng(parseFloat(koordinatFromDatabase[0][0]),parseFloat(koordinatFromDatabase[0][1])));
 }
 
 function toggleBounce(marker) {

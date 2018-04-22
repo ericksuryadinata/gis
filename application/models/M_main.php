@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_main extends CI_Model {
 
+	private $escapeField = array('lokasi', 'wilayah', 'pusat_kota', 'pusat_ukm');
+
     public function selectData($column,$tablename,$where){
         $query = 'select '.$column.' from '.$tablename.' '.$where;
         $data = $this->db->query($query);
@@ -16,9 +18,9 @@ class M_main extends CI_Model {
 
 	public function insertDataWithoutEscape($tablename,$data){
 		foreach ($data as $key => $value) {
-            if ($key == 'lokasi') {
-                $this->db->set('lokasi', $value, false);
-                unset($data['lokasi']);
+            if (in_array($key,$this->escapeField)) {
+                $this->db->set($key, $value, false);
+                unset($data[$key]);
             }
         }
 		$res = $this->db->insert($tablename,$data);
@@ -27,9 +29,9 @@ class M_main extends CI_Model {
 
 	public function updateDataWithoutEscape($tablename,$data,$where){
 		foreach ($data as $key => $value) {
-            if ($key == 'lokasi') {
-                $this->db->set('lokasi', $value, false);
-                unset($data['lokasi']);
+            if (in_array($key,$this->escapeField)) {
+                $this->db->set($key, $value, false);
+                unset($data[$key]);
             }
         }
 		$res = $this->db->update($tablename,$data,$where);
@@ -45,8 +47,4 @@ class M_main extends CI_Model {
 		$res = $this->db->delete($tablename,$where);
 		return $res;
 	}
-	
-
-
-
 }
