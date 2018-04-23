@@ -1,8 +1,10 @@
 let isPusatUkmClicked = isPusatKotaClicked = isWilayahClicked = isPusatUkmEditClicked = isPusatKotaEditClicked = isWilayahEditClicked = false;
 
 function initMap(destination, lokasiFromDatabase){
+	var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
 	let lokasi = {lat: -7.271392714896101, lng: 112.73542550138382};
-	let lokasiPusatKota, lokasiPusatUkm;
+	let lokasiPusatKota, lokasiPusatUkm, markerPusatKota, markerPusatUkm;
+	let infowindow = new google.maps.InfoWindow();
     let map = new google.maps.Map(document.getElementById(destination), {
         zoom: 8,
         center: lokasi,
@@ -12,28 +14,54 @@ function initMap(destination, lokasiFromDatabase){
 	});
 	console.log(lokasiFromDatabase);
 	let koordinatFromDatabase = [];
-    $.each(lokasiFromDatabase, function (i, v) { 
-        koordinatFromDatabase.push([]);
-        lokasi = v.plain_wilayah.replace('MULTIPOINT(','');
+	for (let pos = 0; pos < lokasiFromDatabase.length; pos++) {
+		koordinatFromDatabase.push([]);
+		lokasi = lokasiFromDatabase[pos].plain_wilayah.replace('MULTIPOINT(','');
         lokasi = lokasi.replace(')','');
 		lokasi = lokasi.split(',');
-		lokasiPusatKota = v.pusat_kota.replace('POINT(','');
+		lokasiPusatKota = lokasiFromDatabase[pos].pusat_kota.replace('POINT(','');
 		lokasiPusatKota = lokasiPusatKota.replace(')','');
 		lokasiPusatKota = lokasiPusatKota.split(' ');
 
-		let markerPusatKota = new google.maps.Marker({
+		lokasiPusatUkm = lokasiFromDatabase[pos].pusat_ukm.replace('POINT(','');
+		lokasiPusatUkm = lokasiPusatUkm.replace(')','');
+		lokasiPusatUkm = lokasiPusatUkm.split(' ');
+
+		markerPusatKota = new google.maps.Marker({
 			position  : new google.maps.LatLng(parseFloat(lokasiPusatKota[0]),parseFloat(lokasiPusatKota[1])),
 			map       : map,
-			draggable : true
+			icon : iconBase + 'capital_big_highlight.png',
 		});
-		// koordinatFromDatabase[i].push(lokasi);
+
+		markerPusatUkm = new google.maps.Marker({
+			position  : new google.maps.LatLng(parseFloat(lokasiPusatUkm[0]),parseFloat(lokasiPusatUkm[1])),
+			map       : map,
+			icon : iconBase + 'placemark_circle.png',
+		});
+
+		(function (markerPusatKota, pos) {  
+			google.maps.event.addListener(markerPusatKota, 'click', function (e) {
+					infowindow.setContent(lokasiFromDatabase[pos].nama_kabupaten);
+					infowindow.open(map, markerPusatKota);
+					map.setZoom(10);
+					map.setCenter(markerPusatKota.getPosition());
+			});
+		})(markerPusatKota, pos);
+
+		(function (markerPusatUkm, pos) {  
+			google.maps.event.addListener(markerPusatUkm, 'click', function (e) {
+					infowindow.setContent('Wilayah : '+lokasiFromDatabase[pos].nama_kabupaten);
+					infowindow.open(map, markerPusatUkm);
+					map.setZoom(10);
+					map.setCenter(markerPusatUkm.getPosition());
+			});
+		})(markerPusatUkm, pos);
+		
 		for (let index = 0; index < lokasi.length; index++) {
 			let kumpulanPoint = lokasi[index].split(' ');
-			koordinatFromDatabase[i].push(new google.maps.LatLng(parseFloat(kumpulanPoint[0]),parseFloat(kumpulanPoint[1])));
+			koordinatFromDatabase[pos].push(new google.maps.LatLng(parseFloat(kumpulanPoint[0]),parseFloat(kumpulanPoint[1])));
 		}
-
-	});
-
+	}
 	console.log(koordinatFromDatabase);
     $.each(koordinatFromDatabase, function (i, v) {
 
@@ -65,10 +93,6 @@ function getRandomColor() {
 	return color;
 }
 
-function createTerritory(event){
-
-}
-
 $(document).ready(function () {
 	initMap('map',lokasiFromDatabase);
 	let dialogTambah = document.querySelector('.dialog-tambah');
@@ -96,10 +120,11 @@ $(document).ready(function () {
 
 		google.maps.event.addListener(mapTambah,'click', function(event){
 			let locationClicked = event.latLng;
-			let marketTambah = new google.maps.Marker({
+			let markerTambah = new google.maps.Marker({
 				position : locationClicked,
 				map : mapTambah
 			});
+			
 			if(isPusatKotaClicked == true){
 				$("[name='p6-pusat-kota']").parent().addClass('is-dirty');
 				$("[name='p6-pusat-kota']").text(locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
@@ -140,7 +165,6 @@ $(document).ready(function () {
 				data: {'id':id},
 				dataType: "JSON",
 				success: function (response) {
-					initMap('edit-map',response);
 					response = response[0];
 					let lokasiPusatKota = response.pusat_kota.replace('POINT(','');
 					lokasiPusatKota = lokasiPusatKota.replace(')','');
@@ -165,6 +189,55 @@ $(document).ready(function () {
 					$("[name='p6-pusat-ukm-edit']").parent().addClass('is-dirty');
 					$("[name='p6-wilayah-edit']").val(lokasiWilayah);
 					$("[name='p6-wilayah-edit']").parent().addClass('is-dirty');
+					lokasiPusatKota = lokasiPusatKota.split(' ');
+					let isEditMode = false;
+					let lokasiEdit = {lat: parseFloat(lokasiPusatKota[0]), lng: parseFloat(lokasiPusatKota[1])};
+					let mapEdit = new google.maps.Map(document.getElementById('edit-map'), {
+						zoom: 8,
+						center: lokasiEdit,
+						draggableCursor: 'default',
+						draggingCursor: 'pointer',
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+					});
+
+					google.maps.event.addListener(mapEdit,'click', function(event){
+						let locationEditClicked = event.latLng;
+						console.log(isPusatKotaEditClicked);
+						let markerEdit = new google.maps.Marker({
+							position : locationEditClicked,
+							map : mapEdit
+						});
+						
+						if(isPusatKotaEditClicked == true){
+							$("[name='p6-pusat-kota-edit']").parent().addClass('is-dirty');
+							$("[name='p6-pusat-kota-edit']").text(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+							$("[name='p6-pusat-kota-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+							isPusatKotaEditClicked = false;
+						}
+
+						if(isPusatUkmEditClicked == true){
+							$("[name='p6-pusat-ukm-edit']").parent().addClass('is-dirty');
+							$("[name='p6-pusat-ukm-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+							isPusatUkmEditClicked = false;
+						}
+
+						if(isWilayahEditClicked == true){
+							if($("[name='p6-wilayah-edit']").val() != ''){
+								if(isEditMode == false){
+									$("[name='p6-wilayah-edit']").parent().addClass('is-dirty');
+									$("[name='p6-wilayah-edit']").val('');	
+									isEditMode = true;
+									$("[name='p6-wilayah-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+								}else{
+									$("[name='p6-wilayah-edit']").parent().addClass('is-dirty');
+									$("[name='p6-wilayah-edit']").val($("[name='p6-wilayah-edit']").val()+","+locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+								}
+							}else{
+								$("[name='p6-wilayah-edit']").parent().addClass('is-dirty');
+								$("[name='p6-wilayah-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+							}
+						}
+					});
 				}
 			});
 			dialogEdit.showModal();
@@ -193,6 +266,24 @@ $(document).ready(function () {
 		}
 	});
 
+	$("[name='p6-pusat-kota-edit']").on('click', function () {
+		if(isPusatKotaEditClicked == false){
+			isPusatKotaEditClicked = true;
+		}
+	});
+
+	$("[name='p6-pusat-ukm-edit']").on('click', function () {
+		if(isPusatUkmEditClicked == false){
+			isPusatUkmEditClicked = true;
+		}
+	});
+
+	$("[name='p6-wilayah-edit']").on('click', function () {
+		if(isWilayahEditClicked == false){
+			isWilayahEditClicked = true;
+		}
+	});
+
 	$("#simpan-data").on('click', function () {
         $.ajax({
             type: "POST",
@@ -200,6 +291,7 @@ $(document).ready(function () {
             data: $("#form-tambah-data").serialize(),
             dataType: "JSON",
             success: function (response) {
+				dialogTambah.close();
                 if(response.status == true){
                     swal({
                         title:'Success',
@@ -210,7 +302,33 @@ $(document).ready(function () {
                         allowOutsideClick:false, 
                         timer:1500
                     }).then(function(){
-						dialogTambah.close();
+                        location.reload();
+                    });
+                }else{
+                    swal('error','Data tidak boleh kosong','error');
+                }
+            }
+        });
+	});
+
+	$("#simpan-edit-data").on('click', function () {
+        $.ajax({
+            type: "POST",
+            url: base_url+'lihat/updateMapP6',
+            data: $("#form-edit-data").serialize(),
+            dataType: "JSON",
+            success: function (response) {
+                if(response.status == true){
+					dialogEdit.close();
+                    swal({
+                        title:'Success',
+                        text:'Data Tersimpan',
+                        type:'success', 
+                        showCancelButton:false,
+                        showConfirmButton:false, 
+                        allowOutsideClick:false, 
+                        timer:1500
+                    }).then(function(){
                         location.reload();
                     });
                 }else{

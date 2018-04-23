@@ -186,6 +186,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="mdl-cell mdl-cell--12-col">
 					<form id="form-edit-data">
 						<div class="mdl-grid">
+							<input type="text" name="p6-id-edit" hidden>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 									<input class="mdl-textfield__input" type="text" id="p6-kode-kabupaten-edit" name="p6-kode-kabupaten-edit">

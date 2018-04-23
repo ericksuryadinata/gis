@@ -166,14 +166,33 @@ class Lihat extends CI_Controller {
 
     public function updateMapP6(){
         $id = $this->input->post('p6-id-edit');
-        $kode_kabupaten = $this->input->post('p6-kode-kabupaten');
-		$nama_kabupaten = $this->input->post('p6-nama-kabupaten');
-		$nama_bupati = $this->input->post('p6-nama-bupati');
-		$jumlah_penduduk = $this->input->post('p6-jumlah-penduduk');
-		$jumlah_ukm = $this->input->post('p6-jumlah-ukm');
-		$pusat_kota = $this->input->post('p6-pusat-kota');
-		$pusat_ukm = $this->input->post('p6-pusat-ukm');
-		$wilayah = $this->input->post('p6-wilayah');
+        $kode_kabupaten = $this->input->post('p6-kode-kabupaten-edit');
+		$nama_kabupaten = $this->input->post('p6-nama-kabupaten-edit');
+		$nama_bupati = $this->input->post('p6-nama-bupati-edit');
+		$jumlah_penduduk = $this->input->post('p6-jumlah-penduduk-edit');
+		$jumlah_ukm = $this->input->post('p6-jumlah-ukm-edit');
+		$pusat_kota = $this->input->post('p6-pusat-kota-edit');
+		$pusat_ukm = $this->input->post('p6-pusat-ukm-edit');
+		$wilayah = $this->input->post('p6-wilayah-edit');
+		if($kode_kabupaten === '' || $nama_kabupaten === '' 
+		|| $nama_bupati === '' || $jumlah_penduduk === '' || $jumlah_ukm === ''
+		|| $pusat_kota === '' || $pusat_ukm === '' || $wilayah === ''){
+			echo json_encode(array('status'=>false));
+		}else{
+			$where = array('id'=>$id);
+			$data = array(
+				'kode_kabupaten' => $kode_kabupaten,
+				'nama_kabupaten' => $nama_kabupaten,
+				'wilayah' => 'mpointfromtext("MULTIPOINT('.$wilayah.')")',
+				'pusat_kota' => 'geomfromtext("POINT('.$pusat_kota.')")',
+				'pusat_ukm'	 => 'geomfromtext("POINT('.$pusat_ukm.')")',
+				'nama_bupati' => $nama_bupati,
+				'jumlah_penduduk' => $jumlah_penduduk,
+				'jumlah_ukm' => $jumlah_ukm
+			);
+			$update = $this->main->updateDataWithoutEscape('tb_kumpulan_point_uts',$data,$where);
+            echo json_encode(array('status'=>true));
+		}
         
     }
 
