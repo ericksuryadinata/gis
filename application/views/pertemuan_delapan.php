@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		let base_url = '<?php echo base_url();?>';
 		let lokasiFromDatabase  = <?php echo json_encode($lokasi)?>;
     </script>
-    <script src="<?php echo base_url('assets/js/pertemuan_tujuh.js')?>"></script>
+    <script src="<?php echo base_url('assets/js/pertemuan_delapan.js')?>"></script>
 </head>
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -127,49 +127,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="mdl-grid">
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-kode-kabupaten" name="P7-kode-kabupaten">
+									<input class="mdl-textfield__input" type="text" id="P8-kode-kabupaten" name="P8-kode-kabupaten">
 									<label class="mdl-textfield__label">Kode Kabupaten</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-nama-kabupaten" name="P7-nama-kabupaten">
+									<input class="mdl-textfield__input" type="text" id="P8-nama-kabupaten" name="P8-nama-kabupaten">
 									<label class="mdl-textfield__label">Nama Kabupaten</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-nama-bupati" name="P7-nama-bupati">
+									<input class="mdl-textfield__input" type="text" id="P8-nama-bupati" name="P8-nama-bupati">
 									<label class="mdl-textfield__label">Nama Bupati</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-jumlah-penduduk" name="P7-jumlah-penduduk">
+									<input class="mdl-textfield__input" type="text" id="P8-jumlah-penduduk" name="P8-jumlah-penduduk">
 									<label class="mdl-textfield__label">Jumlah Penduduk</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-jumlah-ukm" name="P7-jumlah-ukm">
+									<input class="mdl-textfield__input" type="text" id="P8-jumlah-ukm" name="P8-jumlah-ukm">
 									<label class="mdl-textfield__label">Jumlah UKM</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-pusat-kota" name="P7-pusat-kota">
+									<input class="mdl-textfield__input" type="text" id="P8-pusat-kota" name="P8-pusat-kota">
 									<label class="mdl-textfield__label">Pusat Kota</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-pusat-ukm" name="P7-pusat-ukm">
+									<input class="mdl-textfield__input" type="text" id="P8-pusat-ukm" name="P8-pusat-ukm">
 									<label class="mdl-textfield__label">Pusat UKM</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<textarea class="mdl-textfield__input" type="text" name="P7-wilayah" id="P7-wilayah"></textarea>
+									<textarea class="mdl-textfield__input" type="text" name="P8-wilayah" id="P8-wilayah"></textarea>
 									<label class="mdl-textfield__label">Wilayah</label>
 								</div>
 							</div>
@@ -201,52 +201,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="mdl-cell mdl-cell--12-col">
 					<form id="form-edit-data">
 						<div class="mdl-grid">
-							<input type="text" name="P7-id-edit" hidden>
+							<input type="text" name="P8-id-edit" hidden>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-kode-kabupaten-edit" name="P7-kode-kabupaten-edit">
+									<input class="mdl-textfield__input" type="text" id="P8-kode-kabupaten-edit" name="P8-kode-kabupaten-edit">
 									<label class="mdl-textfield__label">Kode Kabupaten</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-nama-kabupaten-edit" name="P7-nama-kabupaten-edit">
+									<input class="mdl-textfield__input" type="text" id="P8-nama-kabupaten-edit" name="P8-nama-kabupaten-edit">
 									<label class="mdl-textfield__label">Nama Kabupaten</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-nama-bupati-edit" name="P7-nama-bupati-edit">
+									<input class="mdl-textfield__input" type="text" id="P8-nama-bupati-edit" name="P8-nama-bupati-edit">
 									<label class="mdl-textfield__label">Nama Bupati</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-jumlah-penduduk-edit" name="P7-jumlah-penduduk-edit">
+									<input class="mdl-textfield__input" type="text" id="P8-jumlah-penduduk-edit" name="P8-jumlah-penduduk-edit">
 									<label class="mdl-textfield__label">Jumlah Penduduk</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-jumlah-ukm-edit" name="P7-jumlah-ukm-edit">
+									<input class="mdl-textfield__input" type="text" id="P8-jumlah-ukm-edit" name="P8-jumlah-ukm-edit">
 									<label class="mdl-textfield__label">Jumlah UKM</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-pusat-kota-edit" name="P7-pusat-kota-edit">
+									<input class="mdl-textfield__input" type="text" id="P8-pusat-kota-edit" name="P8-pusat-kota-edit">
 									<label class="mdl-textfield__label">Pusat Kota</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="P7-pusat-ukm-edit" name="P7-pusat-ukm-edit">
+									<input class="mdl-textfield__input" type="text" id="P8-pusat-ukm-edit" name="P8-pusat-ukm-edit">
 									<label class="mdl-textfield__label">Pusat UKM</label>
 								</div>
 							</div>
 							<div class="mdl-cell mdl-cell--2-col">
 								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<textarea class="mdl-textfield__input" type="text" name="P7-wilayah-edit" id="P7-wilayah-edit"></textarea>
+									<textarea class="mdl-textfield__input" type="text" name="P8-wilayah-edit" id="P8-wilayah-edit"></textarea>
 									<label class="mdl-textfield__label">Wilayah</label>
 								</div>
 							</div>

@@ -1,17 +1,138 @@
 let isPusatUkmClicked = isPusatKotaClicked = isWilayahClicked = isPusatUkmEditClicked = isPusatKotaEditClicked = isWilayahEditClicked = false;
 
+function CenterControl(controlDiv, map, center) {
+	// We set up a variable for this since we're adding event listeners
+	// later.
+	let control = this;
+
+	// Set the center property upon construction
+	control.center_ = center;
+	controlDiv.style.clear = 'both';
+
+	// Set CSS for the control border
+	let goCenterUI = document.createElement('div');
+	goCenterUI.id = 'goCenterUI';
+	goCenterUI.title = 'Direct to my house';
+	controlDiv.appendChild(goCenterUI);
+
+	// Set CSS for the control interior
+	let goCenterText = document.createElement('div');
+	goCenterText.id = 'goCenterText';
+	goCenterText.innerHTML = 'My House';
+	goCenterUI.appendChild(goCenterText);
+
+	// Set CSS for the setCenter control border
+	let setCenterUI = document.createElement('div');
+	setCenterUI.id = 'setCenterUI';
+	setCenterUI.title = 'Set this to be my house';
+	controlDiv.appendChild(setCenterUI);
+
+	// Set CSS for the control interior
+	let setCenterText = document.createElement('div');
+	setCenterText.id = 'setCenterText';
+	setCenterText.innerHTML = 'Set Center';
+	setCenterUI.appendChild(setCenterText);
+
+	// Set CSS for the setCenter control border
+	let getOutUI = document.createElement('div');
+	getOutUI.id = 'getOutUI';
+	getOutUI.title = 'Get me out from my house';
+	controlDiv.appendChild(getOutUI);
+
+	// set CSS for the control interior
+	let getOutText = document.createElement('div');
+	getOutText.id = 'getOutText';
+	getOutText.innerHTML = 'get Out';
+	getOutUI.appendChild(getOutText);
+
+	// Set up the click event listener for 'Center Map': Set the center of
+	// the map
+	// to the current center of the control.
+	goCenterUI.addEventListener('click', function() {
+		let currentCenter = control.getCenter();
+		map.setCenter(currentCenter);
+		map.setZoom(22);
+		map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+	});
+
+	// Set up the click event listener for 'Set Center': Set the center of
+	// the control to the current center of the map.
+	setCenterUI.addEventListener('click', function() {
+		let newCenter = map.getCenter();
+		control.setCenter(newCenter);
+	});
+
+	// Listener to get this out from the house
+	getOutUI.addEventListener('click',function(){
+		let now = control.getCenter();
+		map.setCenter(now);
+		map.setZoom(10);
+		map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+	});
+}
+
+/**
+ * Define a property to hold the center state.
+ * @private
+ */
+CenterControl.prototype.center_ = null;
+
+/**
+ * Gets the map center.
+ * @return {?google.maps.LatLng}
+ */
+CenterControl.prototype.getCenter = function() {
+	return this.center_;
+};
+
+/**
+ * Sets the map center.
+ * @param {?google.maps.LatLng} center
+ */
+CenterControl.prototype.setCenter = function(center) {
+	this.center_ = center;
+};
+
+
 function initMap(destination, lokasiFromDatabase){
-	var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-	let lokasi = {lat: -7.271392714896101, lng: 112.73542550138382};
+	let iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+	let lokasi = {lat: -7.2713980361721555, lng: 112.73541477254776};
 	let lokasiPusatKota, lokasiPusatUkm, markerPusatKota, markerPusatUkm;
 	let infowindow = new google.maps.InfoWindow();
     let map = new google.maps.Map(document.getElementById(destination), {
-        zoom: 8,
+        zoom: 10,
         center: lokasi,
         draggableCursor: 'default',
         draggingCursor: 'pointer',
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		mapTypeControl: true,
+		mapTypeControlOptions: {
+			style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+			mapTypeIds: ['roadmap','satellite', 'terrain','labels'],
+			position: google.maps.ControlPosition.BOTTOM_CENTER
+		},
+		zoomControl: true,
+		zoomControlOptions: {
+			position: google.maps.ControlPosition.LEFT_CENTER
+		},
+		scaleControl: true,
+		streetViewControl: true,
+		streetViewControlOptions: {
+			position: google.maps.ControlPosition.LEFT_BOTTOM
+		},
+		fullscreenControl: true
 	});
+
+	// Create the DIV to hold the control and call the CenterControl()
+	// constructor
+	// passing in this DIV.
+	let centerControlDiv = document.createElement('div');
+	let centerControl = new CenterControl(centerControlDiv, map, lokasi);
+
+	centerControlDiv.index = 1;
+	centerControlDiv.style['padding-top'] = '10px';
+	map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+
 	console.log(lokasiFromDatabase);
 	let koordinatFromDatabase = [];
 	for (let pos = 0; pos < lokasiFromDatabase.length; pos++) {
@@ -89,9 +210,9 @@ function toggleBounce(marker) {
 }
 
 function getRandomColor() {
-	var letters = '0123456789ABCDEF';
-	var color = '#';
-	for (var i = 0; i < 6; i++) {
+	let letters = '0123456789ABCDEF';
+	let color = '#';
+	for (let i = 0; i < 6; i++) {
 	  color += letters[Math.floor(Math.random() * 16)];
 	}
 	return color;
@@ -152,25 +273,25 @@ $(document).ready(function () {
 			});
 			
 			if(isPusatKotaClicked == true){
-				$("[name='P7-pusat-kota']").parent().addClass('is-dirty');
-				$("[name='P7-pusat-kota']").text(locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
-				$("[name='P7-pusat-kota']").val(locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
+				$("[name='P8-pusat-kota']").parent().addClass('is-dirty');
+				$("[name='P8-pusat-kota']").text(locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
+				$("[name='P8-pusat-kota']").val(locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
 				isPusatKotaClicked = false;
 			}
 
 			if(isPusatUkmClicked == true){
-				$("[name='P7-pusat-ukm']").parent().addClass('is-dirty');
-				$("[name='P7-pusat-ukm']").val(locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
+				$("[name='P8-pusat-ukm']").parent().addClass('is-dirty');
+				$("[name='P8-pusat-ukm']").val(locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
 				isPusatUkmClicked = false;
 			}
 
 			if(isWilayahClicked == true){
-				if($("[name='P7-wilayah']").val() != ''){
-					$("[name='P7-wilayah']").parent().addClass('is-dirty');
-					$("[name='P7-wilayah']").val($("[name='P7-wilayah']").val()+","+locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
+				if($("[name='P8-wilayah']").val() != ''){
+					$("[name='P8-wilayah']").parent().addClass('is-dirty');
+					$("[name='P8-wilayah']").val($("[name='P8-wilayah']").val()+","+locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
 				}else{
-					$("[name='P7-wilayah']").parent().addClass('is-dirty');
-					$("[name='P7-wilayah']").val(locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
+					$("[name='P8-wilayah']").parent().addClass('is-dirty');
+					$("[name='P8-wilayah']").val(locationClicked.lat().toFixed(4) + " " + locationClicked.lng().toFixed(4));
 				}
 			}
 		})
@@ -186,7 +307,7 @@ $(document).ready(function () {
 		let id = $(this).data("id");
 		$.ajax({
 			type: "POST",
-			url: base_url+'lihat/editMapP7',
+			url: base_url+'lihat/editMapP8',
 			data: {'id':id},
 			dataType: "JSON",
 			success: function (response) {
@@ -203,23 +324,23 @@ $(document).ready(function () {
 				 */
 				lokasiWilayah = lokasiWilayah.replace(/\(/g,"");
 				lokasiWilayah = lokasiWilayah.replace(/\)/g,"");
-				$("[name='P7-id-edit']").val(response.id);
-				$("[name='P7-kode-kabupaten-edit']").val(response.kode_kabupaten);
-				$("[name='P7-kode-kabupaten-edit']").parent().addClass('is-dirty');
-				$("[name='P7-nama-kabupaten-edit']").val(response.nama_kabupaten);
-				$("[name='P7-nama-kabupaten-edit']").parent().addClass('is-dirty');
-				$("[name='P7-nama-bupati-edit']").val(response.nama_bupati);
-				$("[name='P7-nama-bupati-edit']").parent().addClass('is-dirty');
-				$("[name='P7-jumlah-penduduk-edit']").val(response.jumlah_penduduk);
-				$("[name='P7-jumlah-penduduk-edit']").parent().addClass('is-dirty');
-				$("[name='P7-jumlah-ukm-edit']").val(response.jumlah_ukm);
-				$("[name='P7-jumlah-ukm-edit']").parent().addClass('is-dirty');
-				$("[name='P7-pusat-kota-edit']").val(lokasiPusatKota);
-				$("[name='P7-pusat-kota-edit']").parent().addClass('is-dirty');
-				$("[name='P7-pusat-ukm-edit']").val(lokasiPusatUkm);
-				$("[name='P7-pusat-ukm-edit']").parent().addClass('is-dirty');
-				$("[name='P7-wilayah-edit']").val(lokasiWilayah);
-				$("[name='P7-wilayah-edit']").parent().addClass('is-dirty');
+				$("[name='P8-id-edit']").val(response.id);
+				$("[name='P8-kode-kabupaten-edit']").val(response.kode_kabupaten);
+				$("[name='P8-kode-kabupaten-edit']").parent().addClass('is-dirty');
+				$("[name='P8-nama-kabupaten-edit']").val(response.nama_kabupaten);
+				$("[name='P8-nama-kabupaten-edit']").parent().addClass('is-dirty');
+				$("[name='P8-nama-bupati-edit']").val(response.nama_bupati);
+				$("[name='P8-nama-bupati-edit']").parent().addClass('is-dirty');
+				$("[name='P8-jumlah-penduduk-edit']").val(response.jumlah_penduduk);
+				$("[name='P8-jumlah-penduduk-edit']").parent().addClass('is-dirty');
+				$("[name='P8-jumlah-ukm-edit']").val(response.jumlah_ukm);
+				$("[name='P8-jumlah-ukm-edit']").parent().addClass('is-dirty');
+				$("[name='P8-pusat-kota-edit']").val(lokasiPusatKota);
+				$("[name='P8-pusat-kota-edit']").parent().addClass('is-dirty');
+				$("[name='P8-pusat-ukm-edit']").val(lokasiPusatUkm);
+				$("[name='P8-pusat-ukm-edit']").parent().addClass('is-dirty');
+				$("[name='P8-wilayah-edit']").val(lokasiWilayah);
+				$("[name='P8-wilayah-edit']").parent().addClass('is-dirty');
 				lokasiPusatKota = lokasiPusatKota.split(' ');
 				let isEditMode = false;
 				let lokasiEdit = {lat: parseFloat(lokasiPusatKota[0]), lng: parseFloat(lokasiPusatKota[1])};
@@ -240,32 +361,32 @@ $(document).ready(function () {
 					});
 					
 					if(isPusatKotaEditClicked == true){
-						$("[name='P7-pusat-kota-edit']").parent().addClass('is-dirty');
-						$("[name='P7-pusat-kota-edit']").text(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
-						$("[name='P7-pusat-kota-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+						$("[name='P8-pusat-kota-edit']").parent().addClass('is-dirty');
+						$("[name='P8-pusat-kota-edit']").text(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+						$("[name='P8-pusat-kota-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
 						isPusatKotaEditClicked = false;
 					}
 
 					if(isPusatUkmEditClicked == true){
-						$("[name='P7-pusat-ukm-edit']").parent().addClass('is-dirty');
-						$("[name='P7-pusat-ukm-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+						$("[name='P8-pusat-ukm-edit']").parent().addClass('is-dirty');
+						$("[name='P8-pusat-ukm-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
 						isPusatUkmEditClicked = false;
 					}
 
 					if(isWilayahEditClicked == true){
-						if($("[name='P7-wilayah-edit']").val() != ''){
+						if($("[name='P8-wilayah-edit']").val() != ''){
 							if(isEditMode == false){
-								$("[name='P7-wilayah-edit']").parent().addClass('is-dirty');
-								$("[name='P7-wilayah-edit']").val('');	
+								$("[name='P8-wilayah-edit']").parent().addClass('is-dirty');
+								$("[name='P8-wilayah-edit']").val('');	
 								isEditMode = true;
-								$("[name='P7-wilayah-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+								$("[name='P8-wilayah-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
 							}else{
-								$("[name='P7-wilayah-edit']").parent().addClass('is-dirty');
-								$("[name='P7-wilayah-edit']").val($("[name='P7-wilayah-edit']").val()+","+locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+								$("[name='P8-wilayah-edit']").parent().addClass('is-dirty');
+								$("[name='P8-wilayah-edit']").val($("[name='P8-wilayah-edit']").val()+","+locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
 							}
 						}else{
-							$("[name='P7-wilayah-edit']").parent().addClass('is-dirty');
-							$("[name='P7-wilayah-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
+							$("[name='P8-wilayah-edit']").parent().addClass('is-dirty');
+							$("[name='P8-wilayah-edit']").val(locationEditClicked.lat().toFixed(4) + " " + locationEditClicked.lng().toFixed(4));
 						}
 					}
 				});
@@ -279,37 +400,37 @@ $(document).ready(function () {
 		dialogEdit.close();
 	})
 
-	$("[name='P7-pusat-kota']").on('click', function () {
+	$("[name='P8-pusat-kota']").on('click', function () {
 		if(isPusatKotaClicked == false){
 			isPusatKotaClicked = true;
 		}
 	});
 
-	$("[name='P7-pusat-ukm']").on('click', function () {
+	$("[name='P8-pusat-ukm']").on('click', function () {
 		if(isPusatUkmClicked == false){
 			isPusatUkmClicked = true;
 		}
 	});
 
-	$("[name='P7-wilayah']").on('click', function () {
+	$("[name='P8-wilayah']").on('click', function () {
 		if(isWilayahClicked == false){
 			isWilayahClicked = true;
 		}
 	});
 
-	$("[name='P7-pusat-kota-edit']").on('click', function () {
+	$("[name='P8-pusat-kota-edit']").on('click', function () {
 		if(isPusatKotaEditClicked == false){
 			isPusatKotaEditClicked = true;
 		}
 	});
 
-	$("[name='P7-pusat-ukm-edit']").on('click', function () {
+	$("[name='P8-pusat-ukm-edit']").on('click', function () {
 		if(isPusatUkmEditClicked == false){
 			isPusatUkmEditClicked = true;
 		}
 	});
 
-	$("[name='P7-wilayah-edit']").on('click', function () {
+	$("[name='P8-wilayah-edit']").on('click', function () {
 		if(isWilayahEditClicked == false){
 			isWilayahEditClicked = true;
 		}
@@ -318,7 +439,7 @@ $(document).ready(function () {
 	$("#simpan-data").on('click', function () {
         $.ajax({
             type: "POST",
-            url: base_url+'lihat/saveMapP7',
+            url: base_url+'lihat/saveMapP8',
             data: $("#form-tambah-data").serialize(),
             dataType: "JSON",
             success: function (response) {
@@ -349,7 +470,7 @@ $(document).ready(function () {
 	$("#simpan-edit-data").on('click', function () {
         $.ajax({
             type: "POST",
-            url: base_url+'lihat/updateMapP7',
+            url: base_url+'lihat/updateMapP8',
             data: $("#form-edit-data").serialize(),
             dataType: "JSON",
             success: function (response) {
@@ -380,7 +501,7 @@ $(document).ready(function () {
         let id = $(this).data("id");
         $.ajax({
             type: "POST",
-            url: base_url+'lihat/deleteMapP7',
+            url: base_url+'lihat/deleteMapP8',
             data: {'id':id},
             dataType: "JSON",
             success: function (response) {
@@ -407,7 +528,7 @@ $(document).ready(function () {
 	$("#cari-data").on('click', function () {
 		$.ajax({
 			type: "POST",
-			url: base_url+'lihat/searchMapP7',
+			url: base_url+'lihat/searchMapP8',
 			data: {'id':$("[name=field-cari]").val()},
 			dataType: "JSON",
 			success: function (response) {
