@@ -39,16 +39,18 @@ class Lihat extends CI_Controller {
                 break;
 			case 'pertemuan_lima':
 				$data['materi'] = $this->ListMateri();
-                $data['lokasi'] = $this->main->selectData('id, kode_lokasi, nama_lokasi, astext(lokasi) as plain_lokasi','tb_titik','')->result_array();
+                $data['lokasi'] = $this->main->selectData('id, kode_lokasi, nama_lokasi, ST_AsWKT(lokasi) as plain_lokasi','tb_titik','')->result_array();
                 $this->load->view('pertemuan_lima',$data);
                 break;
 			case 'pertemuan_enam':
 				$data['materi'] = $this->ListMateri();
-				$data['lokasi'] = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, astext(wilayah) as plain_wilayah, astext(pusat_kota) as pusat_kota, astext(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result_array();
+				$data['lokasi'] = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result_array();
                 $this->load->view('pertemuan_enam',$data);
                 break;
-            case 'pertemuan_tujuh':
-                $this->load->view('pertemuan_tujuh');
+			case 'pertemuan_tujuh':
+				$data['materi'] = $this->ListMateri();
+				$data['lokasi'] = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result_array();
+                $this->load->view('pertemuan_tujuh',$data);
                 break;
             case 'pertemuan_delapan':
                 $this->load->view('pertemuan_delapan');
@@ -94,7 +96,7 @@ class Lihat extends CI_Controller {
             $data = array(
                 'kode_lokasi' => $kodeLokasi,
                 'nama_lokasi' => $namaLokasi,
-                'lokasi' => 'geomfromtext("POINT('.$lat.' '.$long.')")'
+                'lokasi' => 'ST_GeomFromText("POINT('.$lat.' '.$long.')")'
                 );
             $tambah = $this->main->insertDataWithoutEscape('tb_titik',$data);
             echo json_encode(array('status'=>true));
@@ -114,7 +116,7 @@ class Lihat extends CI_Controller {
             $data = array(
                 'kode_lokasi' => $kodeLokasi,
                 'nama_lokasi' => $namaLokasi,
-                'lokasi' => 'geomfromtext("POINT('.$lat.' '.$long.')")'
+                'lokasi' => 'ST_GeomFromText("POINT('.$lat.' '.$long.')")'
                 );
             $tambah = $this->main->updateDataWithoutEscape('tb_titik',$data,$where);
             echo json_encode(array('status'=>true));
@@ -130,7 +132,7 @@ class Lihat extends CI_Controller {
 
     public function editMapP5(){
         $id = $this->input->post('id');
-        $data = $this->main->selectData('id, kode_lokasi, nama_lokasi, astext(lokasi) as plain_lokasi','tb_titik','where id='.$id)->result();
+        $data = $this->main->selectData('id, kode_lokasi, nama_lokasi, ST_AsWKT(lokasi) as plain_lokasi','tb_titik','where id='.$id)->result();
 		echo json_encode($data);
 	}
 
@@ -151,9 +153,9 @@ class Lihat extends CI_Controller {
 			$data = array(
 				'kode_kabupaten' => $kode_kabupaten,
 				'nama_kabupaten' => $nama_kabupaten,
-				'wilayah' => 'mpointfromtext("MULTIPOINT('.$wilayah.')")',
-				'pusat_kota' => 'geomfromtext("POINT('.$pusat_kota.')")',
-				'pusat_ukm'	 => 'geomfromtext("POINT('.$pusat_ukm.')")',
+				'wilayah' => 'ST_MPointFromText("MULTIPOINT('.$wilayah.')")',
+				'pusat_kota' => 'ST_GeomFromText("POINT('.$pusat_kota.')")',
+				'pusat_ukm'	 => 'ST_GeomFromText("POINT('.$pusat_ukm.')")',
 				'nama_bupati' => $nama_bupati,
 				'jumlah_penduduk' => $jumlah_penduduk,
 				'jumlah_ukm' => $jumlah_ukm
@@ -183,9 +185,9 @@ class Lihat extends CI_Controller {
 			$data = array(
 				'kode_kabupaten' => $kode_kabupaten,
 				'nama_kabupaten' => $nama_kabupaten,
-				'wilayah' => 'mpointfromtext("MULTIPOINT('.$wilayah.')")',
-				'pusat_kota' => 'geomfromtext("POINT('.$pusat_kota.')")',
-				'pusat_ukm'	 => 'geomfromtext("POINT('.$pusat_ukm.')")',
+				'wilayah' => 'ST_MPointFromText("MULTIPOINT('.$wilayah.')")',
+				'pusat_kota' => 'ST_GeomFromText("POINT('.$pusat_kota.')")',
+				'pusat_ukm'	 => 'ST_GeomFromText("POINT('.$pusat_ukm.')")',
 				'nama_bupati' => $nama_bupati,
 				'jumlah_penduduk' => $jumlah_penduduk,
 				'jumlah_ukm' => $jumlah_ukm
@@ -205,7 +207,95 @@ class Lihat extends CI_Controller {
 
     public function editMapP6(){
 		$id = $this->input->post('id');
-        $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, astext(wilayah) as plain_wilayah, astext(pusat_kota) as pusat_kota, astext(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','where id='.$id)->result();
+        $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','where id='.$id)->result();
+		echo json_encode($data);
+	}
+
+	public function saveMapP7(){
+		$kode_kabupaten = $this->input->post('P7-kode-kabupaten');
+		$nama_kabupaten = $this->input->post('P7-nama-kabupaten');
+		$nama_bupati = $this->input->post('P7-nama-bupati');
+		$jumlah_penduduk = $this->input->post('P7-jumlah-penduduk');
+		$jumlah_ukm = $this->input->post('P7-jumlah-ukm');
+		$pusat_kota = $this->input->post('P7-pusat-kota');
+		$pusat_ukm = $this->input->post('P7-pusat-ukm');
+		$wilayah = $this->input->post('P7-wilayah');
+		if($kode_kabupaten === '' || $nama_kabupaten === '' 
+		|| $nama_bupati === '' || $jumlah_penduduk === '' || $jumlah_ukm === ''
+		|| $pusat_kota === '' || $pusat_ukm === '' || $wilayah === ''){
+			echo json_encode(array('status'=>false));
+		}else{
+			$data = array(
+				'kode_kabupaten' => $kode_kabupaten,
+				'nama_kabupaten' => $nama_kabupaten,
+				'wilayah' => 'ST_MPointFromText("MULTIPOINT('.$wilayah.')")',
+				'pusat_kota' => 'ST_GeomFromText("POINT('.$pusat_kota.')")',
+				'pusat_ukm'	 => 'ST_GeomFromText("POINT('.$pusat_ukm.')")',
+				'nama_bupati' => $nama_bupati,
+				'jumlah_penduduk' => $jumlah_penduduk,
+				'jumlah_ukm' => $jumlah_ukm
+			);
+			$tambah = $this->main->insertDataWithoutEscape('tb_kumpulan_point_uts',$data);
+			$data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+            echo json_encode(array('status'=>true,'data'=>$data));
+		}
+        
+    }
+
+    public function updateMapP7(){
+        $id = $this->input->post('P7-id-edit');
+        $kode_kabupaten = $this->input->post('P7-kode-kabupaten-edit');
+		$nama_kabupaten = $this->input->post('P7-nama-kabupaten-edit');
+		$nama_bupati = $this->input->post('P7-nama-bupati-edit');
+		$jumlah_penduduk = $this->input->post('P7-jumlah-penduduk-edit');
+		$jumlah_ukm = $this->input->post('P7-jumlah-ukm-edit');
+		$pusat_kota = $this->input->post('P7-pusat-kota-edit');
+		$pusat_ukm = $this->input->post('P7-pusat-ukm-edit');
+		$wilayah = $this->input->post('P7-wilayah-edit');
+		if($kode_kabupaten === '' || $nama_kabupaten === '' 
+		|| $nama_bupati === '' || $jumlah_penduduk === '' || $jumlah_ukm === ''
+		|| $pusat_kota === '' || $pusat_ukm === '' || $wilayah === ''){
+			echo json_encode(array('status'=>false));
+		}else{
+			$where = array('id'=>$id);
+			$data = array(
+				'kode_kabupaten' => $kode_kabupaten,
+				'nama_kabupaten' => $nama_kabupaten,
+				'wilayah' => 'ST_MPointFromText("MULTIPOINT('.$wilayah.')")',
+				'pusat_kota' => 'ST_GeomFromText("POINT('.$pusat_kota.')")',
+				'pusat_ukm'	 => 'ST_GeomFromText("POINT('.$pusat_ukm.')")',
+				'nama_bupati' => $nama_bupati,
+				'jumlah_penduduk' => $jumlah_penduduk,
+				'jumlah_ukm' => $jumlah_ukm
+			);
+			$update = $this->main->updateDataWithoutEscape('tb_kumpulan_point_uts',$data,$where);
+            $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+            echo json_encode(array('status'=>true,'data'=>$data));
+		}
+        
+    }
+
+    public function deleteMapP7(){
+        $id = $this->input->post('id');
+        $where = array('id'=>$id);
+        $delete = $this->main->deleteData('tb_kumpulan_point_uts',$where);
+        $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+        echo json_encode(array('status'=>true,'data'=>$data));
+    }
+
+    public function editMapP7(){
+		$id = $this->input->post('id');
+        $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','where id='.$id)->result();
+		echo json_encode($data);
+	}
+
+	public function searchMapP7(){
+		$id = $this->input->post('field-cari');
+		if($id === '' || $id == null){
+			$data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+		}else{
+			$data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','where kode_kabupaten='.$id)->result();
+		}
 		echo json_encode($data);
 	}
 
@@ -254,6 +344,11 @@ class Lihat extends CI_Controller {
 				'Bab'=>'Pertemuan Enam',
 				'Materi'=>'Multipoint dengan polygon',
 				'Link'=>'pertemuan_enam'
+			),
+			(object) array(
+				'Bab'=>'Pertemuan Tujuh',
+				'Materi'=>'AJAX Change MAP',
+				'Link'=>'pertemuan_tujuh'
 			),
 		);
 
