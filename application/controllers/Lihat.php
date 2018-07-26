@@ -57,11 +57,15 @@ class Lihat extends CI_Controller {
 				$data['lokasi'] = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result_array();
 				$this->load->view('pertemuan_delapan',$data);
                 break;
-            case 'pertemuan_sembilan':
-                $this->load->view('pertemuan_sembilan');
+			case 'pertemuan_sembilan':
+				$data['materi'] = $this->ListMateri();
+				$data['lokasi'] = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result_array();
+                $this->load->view('pertemuan_sembilan',$data);
                 break;
             case 'pertemuan_sepuluh':
-                $this->load->view('pertemuan_sepuluh');
+				$data['materi'] = $this->ListMateri();
+				$data['lokasi'] = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result_array();
+				$this->load->view('pertemuan_sepuluh',$data);
                 break;
             case 'pertemuan_sebelas':
                 $this->load->view('pertemuan_sebelas');
@@ -301,20 +305,6 @@ class Lihat extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	protected function createArrayMultipoint($arrayMultipoint){
-		$value = '';
-		for($i = 0; $i < count($arrayMultipoint); $i++){
-			$_multipoint =explode(',',$arrayMultipoint[$i]);
-			if($i == (count($arrayMultipoint) - 1)){
-				$value .= $_multipoint[0].' '.$_multipoint[1];
-			}else{
-				$value .= $_multipoint[0].' '.$_multipoint[1].',';
-			}
-			
-		}
-		return $value;
-	}
-
 	public function saveMapP8(){
 		$kode_kabupaten = $this->input->post('P8-kode-kabupaten');
 		$nama_kabupaten = $this->input->post('P8-nama-kabupaten');
@@ -402,6 +392,196 @@ class Lihat extends CI_Controller {
 		}
 		echo json_encode($data);
 	}
+
+	public function saveMapP9(){
+		$kode_kabupaten = $this->input->post('P9-kode-kabupaten');
+		$nama_kabupaten = $this->input->post('P9-nama-kabupaten');
+		$nama_bupati = $this->input->post('P9-nama-bupati');
+		$jumlah_penduduk = $this->input->post('P9-jumlah-penduduk');
+		$jumlah_ukm = $this->input->post('P9-jumlah-ukm');
+		$pusat_kota = $this->input->post('P9-pusat-kota');
+		$pusat_ukm = $this->input->post('P9-pusat-ukm');
+		$wilayah = $this->input->post('P9-wilayah');
+		if($kode_kabupaten === '' || $nama_kabupaten === '' 
+		|| $nama_bupati === '' || $jumlah_penduduk === '' || $jumlah_ukm === ''
+		|| $pusat_kota === '' || $pusat_ukm === '' || $wilayah === ''){
+			echo json_encode(array('status'=>false));
+		}else{
+			$data = array(
+				'kode_kabupaten' => $kode_kabupaten,
+				'nama_kabupaten' => $nama_kabupaten,
+				'wilayah' => 'ST_MPointFromText("MULTIPOINT('.$wilayah.')")',
+				'pusat_kota' => 'ST_GeomFromText("POINT('.$pusat_kota.')")',
+				'pusat_ukm'	 => 'ST_GeomFromText("POINT('.$pusat_ukm.')")',
+				'nama_bupati' => $nama_bupati,
+				'jumlah_penduduk' => $jumlah_penduduk,
+				'jumlah_ukm' => $jumlah_ukm
+			);
+			$tambah = $this->main->insertDataWithoutEscape('tb_kumpulan_point_uts',$data);
+			$data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+            echo json_encode(array('status'=>true,'data'=>$data));
+		}
+        
+    }
+
+    public function updateMapP9(){
+        $id = $this->input->post('P9-id-edit');
+        $kode_kabupaten = $this->input->post('P9-kode-kabupaten-edit');
+		$nama_kabupaten = $this->input->post('P9-nama-kabupaten-edit');
+		$nama_bupati = $this->input->post('P9-nama-bupati-edit');
+		$jumlah_penduduk = $this->input->post('P9-jumlah-penduduk-edit');
+		$jumlah_ukm = $this->input->post('P9-jumlah-ukm-edit');
+		$pusat_kota = $this->input->post('P9-pusat-kota-edit');
+		$pusat_ukm = $this->input->post('P9-pusat-ukm-edit');
+		$wilayah = $this->input->post('P9-wilayah-edit');
+		if($kode_kabupaten === '' || $nama_kabupaten === '' 
+		|| $nama_bupati === '' || $jumlah_penduduk === '' || $jumlah_ukm === ''
+		|| $pusat_kota === '' || $pusat_ukm === '' || $wilayah === ''){
+			echo json_encode(array('status'=>false));
+		}else{
+			$where = array('id'=>$id);
+			$data = array(
+				'kode_kabupaten' => $kode_kabupaten,
+				'nama_kabupaten' => $nama_kabupaten,
+				'wilayah' => 'ST_MPointFromText("MULTIPOINT('.$wilayah.')")',
+				'pusat_kota' => 'ST_GeomFromText("POINT('.$pusat_kota.')")',
+				'pusat_ukm'	 => 'ST_GeomFromText("POINT('.$pusat_ukm.')")',
+				'nama_bupati' => $nama_bupati,
+				'jumlah_penduduk' => $jumlah_penduduk,
+				'jumlah_ukm' => $jumlah_ukm
+			);
+			$update = $this->main->updateDataWithoutEscape('tb_kumpulan_point_uts',$data,$where);
+            $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+            echo json_encode(array('status'=>true,'data'=>$data));
+		}
+        
+    }
+
+    public function deleteMapP9(){
+        $id = $this->input->post('id');
+        $where = array('id'=>$id);
+        $delete = $this->main->deleteData('tb_kumpulan_point_uts',$where);
+        $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+        echo json_encode(array('status'=>true,'data'=>$data));
+    }
+
+    public function editMapP9(){
+		$id = $this->input->post('id');
+        $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','where id='.$id)->result();
+		echo json_encode($data);
+	}
+
+	public function searchMapP9(){
+		$id = $this->input->post('id');
+		if($id === '' || $id == null){
+			$data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+		}else{
+			$data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','where kode_kabupaten='.$id)->result();
+		}
+		echo json_encode($data);
+	}
+
+	public function saveMapP10(){
+		$kode_kabupaten = $this->input->post('P10-kode-kabupaten');
+		$nama_kabupaten = $this->input->post('P10-nama-kabupaten');
+		$nama_bupati = $this->input->post('P10-nama-bupati');
+		$jumlah_penduduk = $this->input->post('P10-jumlah-penduduk');
+		$jumlah_ukm = $this->input->post('P10-jumlah-ukm');
+		$pusat_kota = $this->input->post('P10-pusat-kota');
+		$pusat_ukm = $this->input->post('P10-pusat-ukm');
+		$wilayah = $this->input->post('P10-wilayah');
+		if($kode_kabupaten === '' || $nama_kabupaten === '' 
+		|| $nama_bupati === '' || $jumlah_penduduk === '' || $jumlah_ukm === ''
+		|| $pusat_kota === '' || $pusat_ukm === '' || $wilayah === ''){
+			echo json_encode(array('status'=>false));
+		}else{
+			$data = array(
+				'kode_kabupaten' => $kode_kabupaten,
+				'nama_kabupaten' => $nama_kabupaten,
+				'wilayah' => 'ST_MPointFromText("MULTIPOINT('.$wilayah.')")',
+				'pusat_kota' => 'ST_GeomFromText("POINT('.$pusat_kota.')")',
+				'pusat_ukm'	 => 'ST_GeomFromText("POINT('.$pusat_ukm.')")',
+				'nama_bupati' => $nama_bupati,
+				'jumlah_penduduk' => $jumlah_penduduk,
+				'jumlah_ukm' => $jumlah_ukm
+			);
+			$tambah = $this->main->insertDataWithoutEscape('tb_kumpulan_point_uts',$data);
+			$data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+            echo json_encode(array('status'=>true,'data'=>$data));
+		}
+        
+    }
+
+    public function updateMapP10(){
+        $id = $this->input->post('P10-id-edit');
+        $kode_kabupaten = $this->input->post('P10-kode-kabupaten-edit');
+		$nama_kabupaten = $this->input->post('P10-nama-kabupaten-edit');
+		$nama_bupati = $this->input->post('P10-nama-bupati-edit');
+		$jumlah_penduduk = $this->input->post('P10-jumlah-penduduk-edit');
+		$jumlah_ukm = $this->input->post('P10-jumlah-ukm-edit');
+		$pusat_kota = $this->input->post('P10-pusat-kota-edit');
+		$pusat_ukm = $this->input->post('P10-pusat-ukm-edit');
+		$wilayah = $this->input->post('P10-wilayah-edit');
+		if($kode_kabupaten === '' || $nama_kabupaten === '' 
+		|| $nama_bupati === '' || $jumlah_penduduk === '' || $jumlah_ukm === ''
+		|| $pusat_kota === '' || $pusat_ukm === '' || $wilayah === ''){
+			echo json_encode(array('status'=>false));
+		}else{
+			$where = array('id'=>$id);
+			$data = array(
+				'kode_kabupaten' => $kode_kabupaten,
+				'nama_kabupaten' => $nama_kabupaten,
+				'wilayah' => 'ST_MPointFromText("MULTIPOINT('.$wilayah.')")',
+				'pusat_kota' => 'ST_GeomFromText("POINT('.$pusat_kota.')")',
+				'pusat_ukm'	 => 'ST_GeomFromText("POINT('.$pusat_ukm.')")',
+				'nama_bupati' => $nama_bupati,
+				'jumlah_penduduk' => $jumlah_penduduk,
+				'jumlah_ukm' => $jumlah_ukm
+			);
+			$update = $this->main->updateDataWithoutEscape('tb_kumpulan_point_uts',$data,$where);
+            $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+            echo json_encode(array('status'=>true,'data'=>$data));
+		}
+        
+    }
+
+    public function deleteMapP10(){
+        $id = $this->input->post('id');
+        $where = array('id'=>$id);
+        $delete = $this->main->deleteData('tb_kumpulan_point_uts',$where);
+        $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+        echo json_encode(array('status'=>true,'data'=>$data));
+    }
+
+    public function editMapP10(){
+		$id = $this->input->post('id');
+        $data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','where id='.$id)->result();
+		echo json_encode($data);
+	}
+
+	public function searchMapP10(){
+		$id = $this->input->post('id');
+		if($id === '' || $id == null){
+			$data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','')->result();
+		}else{
+			$data = $this->main->selectData('id, kode_kabupaten, nama_kabupaten, ST_AsWKT(wilayah) as plain_wilayah, ST_AsWKT(pusat_kota) as pusat_kota, ST_AsWKT(pusat_ukm) as pusat_ukm, nama_bupati, jumlah_penduduk, jumlah_ukm','tb_kumpulan_point_uts','where kode_kabupaten='.$id)->result();
+		}
+		echo json_encode($data);
+	}
+
+	protected function createArrayMultipoint($arrayMultipoint){
+		$value = '';
+		for($i = 0; $i < count($arrayMultipoint); $i++){
+			$_multipoint =explode(',',$arrayMultipoint[$i]);
+			if($i == (count($arrayMultipoint) - 1)){
+				$value .= $_multipoint[0].' '.$_multipoint[1];
+			}else{
+				$value .= $_multipoint[0].' '.$_multipoint[1].',';
+			}
+			
+		}
+		return $value;
+	}
 	
 	protected function ListMateri(){
 		$data = array(
@@ -444,6 +624,21 @@ class Lihat extends CI_Controller {
 				'Bab'=>'Pertemuan Delapan',
 				'Materi'=>'Styling Map',
 				'Link'=>'pertemuan_delapan'
+			),
+			(object) array(
+				'Bab'=>'Pertemuan Sembilan',
+				'Materi'=>'Styling Map bag. 2',
+				'Link'=>'pertemuan_sembilan'
+			),
+			(object) array(
+				'Bab'=>'Pertemuan Sepuluh',
+				'Materi'=>'Styling Map bag. 3',
+				'Link'=>'pertemuan_sepuluh'
+			),
+			(object) array(
+				'Bab'=>'Pertemuan Sebelas',
+				'Materi'=>'Luas Area',
+				'Link'=>'pertemuan_sebelas'
 			),
 		);
 
